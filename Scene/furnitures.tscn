@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://4qdhyh472tpg"]
+
+[ext_resource type="Texture2D" uid="uid://yvjme5gnaacj" path="res://Assests/Top-Down_Retro_Interior/TopDownHouse_FurnitureState1.png" id="1_jw1bg"]
+[ext_resource type="Texture2D" uid="uid://boqtyiho3ar04" path="res://Assests/Pixel UI pack 3 (1)/04.png" id="1_yycg8"]
+[ext_resource type="Script" uid="uid://cif0rx1otbb2a" path="res://Scene/destroy_zone.gd" id="3_yonmj"]
+[ext_resource type="Texture2D" uid="uid://chf15g3nhw57e" path="res://Assests/Pixel UI pack 3 (1)/All.png" id="4_gwoy6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yonmj"]
+atlas = ExtResource("1_yycg8")
+region = Rect2(48, 63, 48, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwoy6"]
+atlas = ExtResource("1_yycg8")
+region = Rect2(96, 63, 48, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnlmg"]
+atlas = ExtResource("1_yycg8")
+region = Rect2(144, 63, 48, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2nq0"]
+atlas = ExtResource("1_yycg8")
+region = Rect2(192, 63, 48, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nv1v1"]
+atlas = ExtResource("1_yycg8")
+region = Rect2(240, 63, 48, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70b26"]
+atlas = ExtResource("1_yycg8")
+region = Rect2(288, 63, 48, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d17fa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yonmj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwoy6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnlmg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2nq0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nv1v1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70b26")
+}],
+"loop": 1,
+"name": &"Health",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7s4v3"]
+radius = 21.377558
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7s4v3"]
+size = Vector2(24, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s3ehu"]
+atlas = ExtResource("4_gwoy6")
+region = Rect2(270, 80, 18, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y057o"]
+atlas = ExtResource("4_gwoy6")
+region = Rect2(252, 80, 18, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7s4v3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s3ehu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y057o")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Furnitures_Fridge" type="Node2D" unique_id=1181053838]
+
+[node name="Health" type="AnimatedSprite2D" parent="." unique_id=1560977040]
+position = Vector2(0, -41)
+sprite_frames = SubResource("SpriteFrames_d17fa")
+animation = &"Health"
+
+[node name="Fridge" type="Sprite2D" parent="." unique_id=1622821772]
+texture = ExtResource("1_jw1bg")
+region_enabled = true
+region_rect = Rect2(33.23723, 195.76619, 29.141975, 57.26671)
+
+[node name="Destroy_Zone" type="Area2D" parent="." unique_id=829681994]
+script = ExtResource("3_yonmj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Destroy_Zone" unique_id=1389357476]
+position = Vector2(0, 26)
+shape = SubResource("CircleShape2D_7s4v3")
+debug_color = Color(0.48866665, 0.44845575, 0.96470076, 0.41960785)
+
+[node name="Furniture_Collision" type="StaticBody2D" parent="." unique_id=1394218285]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Furniture_Collision" unique_id=1455163862]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_7s4v3")
+
+[node name="Timer" type="Timer" parent="." unique_id=1991330410]
+wait_time = 5.0
+
+[node name="ALLOW" type="AnimatedSprite2D" parent="." unique_id=335470002]
+position = Vector2(5, -40)
+sprite_frames = SubResource("SpriteFrames_7s4v3")
+
+[connection signal="body_entered" from="Destroy_Zone" to="Destroy_Zone" method="_on_body_entered_enemy"]
+[connection signal="body_exited" from="Destroy_Zone" to="Destroy_Zone" method="_on_body_exited"]

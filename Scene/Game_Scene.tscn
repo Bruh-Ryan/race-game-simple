@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cyrcefv5wyyqe"]
+
+[ext_resource type="PackedScene" uid="uid://c7f8n1tdvb3p1" path="res://Scene/Map_1.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://cl27gojbf4tgo" path="res://Scene/Enemies/Enemy_Type_2.tscn" id="1_xdi83"]
+[ext_resource type="PackedScene" uid="uid://co3aawst2x11d" path="res://Scene/Player.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://8t2f31cka447" path="res://Scene/Enemies/Enemy_Type_1.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://4qdhyh472tpg" path="res://Scene/furnitures.tscn" id="5_jwywc"]
+[ext_resource type="PackedScene" uid="uid://q8n4urvr7sar" path="res://Scene/HUD.tscn" id="6_2k45p"]
+[ext_resource type="PackedScene" uid="uid://b4e6eo7eble2o" path="res://Scene/Items/Item.tscn" id="7_xbc6k"]
+[ext_resource type="Texture2D" uid="uid://p0f2skrxmnnx" path="res://Assests/Items/Money.png" id="8_j72ap"]
+
+[node name="Game_Scene" type="Node2D" unique_id=815291442]
+
+[node name="Map_1" parent="." unique_id=417891911 instance=ExtResource("1")]
+position = Vector2(1, 0)
+
+[node name="Enemy_Type_2" parent="." unique_id=1252478247 instance=ExtResource("1_xdi83")]
+position = Vector2(36, 33)
+
+[node name="Enemy_Type_1" parent="." unique_id=53450912 instance=ExtResource("3")]
+position = Vector2(27, -147)
+
+[node name="Hud" parent="." unique_id=159590316 instance=ExtResource("6_2k45p")]
+
+[node name="Player" parent="." unique_id=1763779870 instance=ExtResource("2")]
+position = Vector2(134, -123)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1739717618]
+zoom = Vector2(2.265, 2.265)
+
+[node name="Furnitures" parent="." unique_id=1181053838 instance=ExtResource("5_jwywc")]
+position = Vector2(25, -201)
+
+[node name="Items" parent="." unique_id=482904108 instance=ExtResource("7_xbc6k")]
+position = Vector2(218, -137)
+item_effect = "Money Increase"
+item_texture = ExtResource("8_j72ap")

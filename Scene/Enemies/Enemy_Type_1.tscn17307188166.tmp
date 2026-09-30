@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://8t2f31cka447"]
+
+[ext_resource type="Script" uid="uid://dptgx374mrptg" path="res://Scene/Enemies/Enemy_Type_1.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://n34l7pu1ypm8" path="res://Assests/Side View Assets JPG/Wraiths.png" id="2_1p13q"]
+
+[sub_resource type="CapsuleShape2D" id="1"]
+radius = 4.0
+height = 38.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpg88"]
+atlas = ExtResource("2_1p13q")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k0hev"]
+atlas = ExtResource("2_1p13q")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yemvs"]
+atlas = ExtResource("2_1p13q")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6akuv"]
+atlas = ExtResource("2_1p13q")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpg88")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k0hev")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yemvs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6akuv")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="7"]
+radius = 76.00658
+
+[node name="Enemy_Type_1" type="CharacterBody2D" unique_id=233077196]
+script = ExtResource("2")
+increase_speed_in = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2049897628]
+shape = SubResource("1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1007298192]
+show_behind_parent = true
+sprite_frames = SubResource("6")
+
+[node name="Detect_Sphere" type="Area2D" parent="." unique_id=1176524947]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect_Sphere" unique_id=491583171]
+shape = SubResource("7")
+
+[node name="WanderTimer" type="Timer" parent="." unique_id=18564627]
+autostart = true
+
+[node name="IncreaseSpeed" type="Timer" parent="." unique_id=2128946404]
+
+[connection signal="area_shape_entered" from="Detect_Sphere" to="." method="_on_detect_sphere_area_shape_entered"]
+[connection signal="body_entered" from="Detect_Sphere" to="." method="_on_Detect_Sphere_body_entered"]
+[connection signal="body_exited" from="Detect_Sphere" to="." method="_on_Detect_Sphere_body_exited"]

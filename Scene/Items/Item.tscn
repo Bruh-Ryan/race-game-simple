@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://b4e6eo7eble2o"]
+
+[ext_resource type="Script" uid="uid://ukfd2r6w0hpn" path="res://Scene/Items/Item.gd" id="1_2iso3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7s4v3"]
+radius = 20.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_b2btj"]
+load_path = "res://.godot/imported/Money.png-ce6a10911a0c04abf1efffd20b806ffa.ctex"
+
+[node name="Items" type="Node2D" unique_id=482904108]
+script = ExtResource("1_2iso3")
+
+[node name="Collection_Area" type="Area2D" parent="." unique_id=1645356363]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collection_Area" unique_id=1037709802]
+shape = SubResource("CircleShape2D_7s4v3")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=446224082]
+position = Vector2(-1, 0)
+scale = Vector2(1.43, 1.43)
+texture = SubResource("CompressedTexture2D_b2btj")
+
+[connection signal="body_entered" from="Collection_Area" to="." method="_on_collection_area_body_entered"]
+[connection signal="body_exited" from="Collection_Area" to="." method="_on_collection_area_body_exited"]

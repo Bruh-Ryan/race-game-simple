@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://q8n4urvr7sar"]
+
+[ext_resource type="Script" uid="uid://dovs4i3yfs6y1" path="res://Scene/Hud.gd" id="1_0apqc"]
+
+[node name="Hud" type="CanvasLayer" unique_id=159590316]
+script = ExtResource("1_0apqc")
+
+[node name="KillsLabel" type="Label" parent="." unique_id=494592334]
+offset_left = 1012.0
+offset_top = 30.0
+offset_right = 1117.0
+offset_bottom = 79.0
+
+[node name="TimeLabel" type="Label" parent="." unique_id=237880410]
+offset_left = 886.0
+offset_top = 30.0
+offset_right = 991.0
+offset_bottom = 79.0
+
+[node name="InventoryPanel" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="ItemsLabel" type="Label" parent="InventoryPanel"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -72.0
+offset_right = 240.0
+offset_bottom = -44.0
+theme_override_font_sizes/font_size = 24
+mouse_filter = 2
+text = "Items: 0"
+
+[node name="KeyLabel" type="Label" parent="InventoryPanel"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -40.0
+offset_right = 340.0
+offset_bottom = -12.0
+theme_override_font_sizes/font_size = 24
+mouse_filter = 2
+text = "Keys: -"

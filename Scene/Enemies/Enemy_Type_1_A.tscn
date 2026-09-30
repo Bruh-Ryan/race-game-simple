@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://bvqsxqra7xarl"]
+
+[ext_resource type="Texture2D" uid="uid://n34l7pu1ypm8" path="res://Assests/Side View Assets JPG/Wraiths.png" id="1_tf5kf"]
+
+[sub_resource type="GDScript" id="GDScript_qn5lq"]
+script/source = "extends CharacterBody2D
+
+@onready var furniture_map = get_node(\"../Map_1/Furniture\")
+@onready var wander_timer = $WanderTimer  
+@onready var increase_speed_timer : Timer = $IncreaseSpeed
+@onready var ANIMATION : AnimatedSprite2D = $AnimatedSprite2D
+
+## enemy speeds :
+var WAN_SPEED = 40
+var wander_velocity = Vector2.ZERO
+var FOLLOW_SPEED = 38
+var MAX_FOLLOW_SPEED = 46
+@export var increase_speed_in = 5
+
+## enemy conditions : 
+var FOLLOW_PLY = false
+var player_ref = null
+var current_des_zone
+
+##Furniture Variables :
+var IN_RANGE_FUR = false  
+var IS_ATTACKING_FUR = false
+
+func _ready():
+	add_to_group(\"Enemy\")
+	randomize()
+	wander_timer.connect(\"timeout\", Callable(self, \"_pick_new_wander_direction\"))
+	_pick_new_wander_direction() 
+	call_deferred(\"_connect_to_zones\")
+	increase_speed_timer.wait_time = 3
+	increase_speed_timer.one_shot = false
+	increase_speed_timer.timeout.connect(_on_increase_speed_timeout)
+
+
+func _physics_process(delta):
+	if FOLLOW_PLY and player_ref and !IN_RANGE_FUR:
+		var direction = (player_ref.global_position - global_position).normalized()
+		set_velocity(direction * FOLLOW_SPEED)
+		move_and_slide()
+	elif(IN_RANGE_FUR and !FOLLOW_PLY):
+		IS_ATTACKING_FUR = true
+	else:
+		set_velocity(wander_velocity)
+		move_and_slide()
+		ANIMATION.play(\"default\")
+
+func _pick_new_wander_direction():
+	var velocity = Vector2.ZERO
+	velocity.x = 1 if randf() > 0.5 else -1
+	velocity.y = 1 if randf() > 0.5 else -1
+	wander_velocity = velocity.normalized() * WAN_SPEED
+
+func _on_increase_speed_timeout() -> void:
+	if FOLLOW_PLY:
+		FOLLOW_SPEED = min(FOLLOW_SPEED + increase_speed_in, MAX_FOLLOW_SPEED)
+		#print(\"Speed increased to: \", FOLLOW_SPEED)
+
+func _update_status_destroy(body: Node2D, is_attacked: bool):
+	if body == self:
+		IN_RANGE_FUR = is_attacked
+
+func _on_detect_sphere_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"Player\"):
+		player_ref = body
+		FOLLOW_PLY = true
+		increase_speed_timer.start()
+
+func _on_detect_sphere_body_exited(body: Node2D) -> void:
+	if body.is_in_group(\"Player\"):
+		FOLLOW_PLY = false
+		player_ref = null
+		FOLLOW_SPEED = 38
+		increase_speed_timer.stop()
+
+func _connect_to_zones():
+	var zones = get_tree().get_nodes_in_group(\"Destroy_Zones\")
+	for des_zn in zones:
+		des_zn.broadcast_furniture_status.connect(_update_status_destroy)
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3jbw"]
+atlas = ExtResource("1_tf5kf")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmxpm"]
+atlas = ExtResource("1_tf5kf")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qn5lq"]
+atlas = ExtResource("1_tf5kf")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahknl"]
+atlas = ExtResource("1_tf5kf")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d17fa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3jbw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmxpm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qn5lq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ahknl")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7s4v3"]
+radius = 16.0
+height = 44.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7s4v3"]
+radius = 160.44937
+
+[node name="Enemy_Type_1_A" type="CharacterBody2D" unique_id=2025249217]
+scale = Vector2(0.5, 0.5)
+script = SubResource("GDScript_qn5lq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=35313942]
+sprite_frames = SubResource("SpriteFrames_d17fa")
+frame_progress = 0.6460583
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=392794745]
+shape = SubResource("CapsuleShape2D_7s4v3")
+
+[node name="Detect_Sphere" type="Area2D" parent="." unique_id=54749357]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect_Sphere" unique_id=1718983805]
+shape = SubResource("CircleShape2D_7s4v3")
+
+[node name="WanderTimer" type="Timer" parent="." unique_id=1423727458]
+autostart = true
+
+[node name="IncreaseSpeed" type="Timer" parent="." unique_id=1350544469]
+
+[connection signal="body_entered" from="Detect_Sphere" to="." method="_on_detect_sphere_body_entered"]
+[connection signal="body_exited" from="Detect_Sphere" to="." method="_on_detect_sphere_body_exited"]
